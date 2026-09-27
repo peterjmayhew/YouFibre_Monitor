@@ -1,0 +1,83 @@
+<p><strong>Is my broadband dropping out, or is it just my imagination?</strong> I wanted a straight answer to that question, with proof. So I built a small monitor that checks my YouFibre connection every ten seconds, day and night, and records exactly when the internet goes down and when it comes back up. It costs less than a takeaway, and I've made it free for anyone to use.</p>
+
+<h2>Why I built it</h2>
+
+<p>Everyone has had it happen: a video call freezes, a download stalls, the smart speaker says it's "having trouble connecting". By the time you look, everything is working again. Was it the broadband? The Wi-Fi? The router? And if you contact your provider, the first thing they'll ask is <em>when</em> it happened and for how long.</p>
+
+<p>Speed-test websites only tell you how things are at that moment. I wanted something that watches all the time, remembers every drop-out, and gives me a clear report I can look back on or send to my provider if I need to.</p>
+
+<h2>What it does</h2>
+
+<ul>
+<li><strong>Checks the internet every 10 seconds, 24/7</strong>, by trying to reach Cloudflare, Google and Quad9. If none of them answer for 30 seconds, it counts as an outage.</li>
+<li><strong>Records exact times</strong>, e.g. <em>"went down Tue 3 Sep 14:02:10, came back up 14:37:55, down for 35m 45s"</em>.</li>
+<li><strong>Works out the likely cause.</strong> It pings my router during an outage: if the router answers but the internet doesn't, the fault is on the broadband side rather than in my house.</li>
+<li><strong>Never loses a record.</strong> While the internet is down it saves outages in its own memory, even if it restarts, and uploads them as soon as the connection is back.</li>
+<li><strong>Emails me</strong> a "DOWN?" warning when it goes quiet, and a "Back online" message with the exact times when it returns.</li>
+<li><strong>Keeps an uptime report on this website</strong>: uptime percentage for the last day, week, month and three months, a colour-coded day-by-day chart, and a list of every outage that I can download as a spreadsheet.</li>
+</ul>
+
+<h2>How it works</h2>
+
+<p>There are two parts: a tiny computer at home, and a plugin on this website.</p>
+
+<p><strong>1. At home: an ESP32.</strong> An ESP32 is a thumb-sized circuit board with built-in Wi-Fi that costs about £5–£10. Mine is plugged into a USB phone charger next to the router. It runs a small program I wrote that does all the checking.</p>
+
+<p><strong>2. On the website: a WordPress plugin.</strong> Every minute the ESP32 sends a short "I'm still here" message (a <em>heartbeat</em>) to this site. After an outage, it also sends the exact down and up times it recorded. The plugin stores everything and builds the reports.</p>
+
+<p>The clever part is that the two halves watch each other. When my internet is down, the ESP32 obviously can't reach the website. So it keeps its own record and sends it later. Meanwhile the website notices the heartbeats have stopped and emails me straight away. That even covers power cuts, when the ESP32 is off too.</p>
+
+<pre style="font-size:13px;line-height:1.4;overflow-x:auto;background:#f6f7f7;padding:14px;border-radius:6px;">
+ AT HOME                                  ON THE WEBSITE
+ ESP32 on the Wi-Fi                       WordPress plugin
+  - tests the internet every 10 s  ──▶    - stores heartbeats (every 60 s)
+  - notes exact outage times       ──▶    - notices if they stop, emails me
+  - saves them until back online          - builds the uptime report + CSV
+</pre>
+
+<h2>What the report looks like</h2>
+
+<p>In the WordPress dashboard I have a <strong>Broadband Uptime</strong> page. At the top, a live panel says <strong>"Receiving heartbeats from the ESP32"</strong> with a green tick and how many seconds ago the last one arrived. A bar underneath shows the last 60 minutes, one block per minute: green if a heartbeat arrived, red if it didn't. It updates by itself, and a green <strong>● Broadband: Online</strong> dot sits in the admin bar on every page.</p>
+
+<p>Below that is the part I really wanted: a plain table of <strong>when it went down, when it came back up, how long for, and why</strong>. The causes are labelled as "Internet down – router reachable", "No Wi-Fi" or "Monitor offline", which usually means a power cut. It can export that table, or a day-by-day summary, to a spreadsheet for any date range.</p>
+
+<h2>What you need to build your own</h2>
+
+<table style="border-collapse:collapse;width:100%;">
+<thead>
+<tr><th style="text-align:left;border-bottom:2px solid #ddd;padding:8px;">Item</th><th style="text-align:left;border-bottom:2px solid #ddd;padding:8px;">Cost</th></tr>
+</thead>
+<tbody>
+<tr><td style="border-bottom:1px solid #eee;padding:8px;">An ESP32 or ESP32-S3 development board</td><td style="border-bottom:1px solid #eee;padding:8px;">About £5–£10</td></tr>
+<tr><td style="border-bottom:1px solid #eee;padding:8px;">A USB data cable and a spare USB phone charger</td><td style="border-bottom:1px solid #eee;padding:8px;">You probably have these</td></tr>
+<tr><td style="border-bottom:1px solid #eee;padding:8px;">A WordPress website hosted <em>outside</em> your home</td><td style="border-bottom:1px solid #eee;padding:8px;">You'll need one</td></tr>
+<tr><td style="border-bottom:1px solid #eee;padding:8px;">The Arduino IDE, the ESP32 program and the WordPress plugin</td><td style="border-bottom:1px solid #eee;padding:8px;">Free</td></tr>
+</tbody>
+</table>
+
+<p>Set-up takes about 30–45 minutes the first time:</p>
+
+<ol>
+<li><strong>Install the plugin</strong> on your WordPress site. It gives you a secret token.</li>
+<li><strong>Add an every-minute scheduled task</strong> in your hosting control panel (Plesk, cPanel, or a free service like cron-job.org), so the "DOWN?" emails go out promptly.</li>
+<li><strong>Put your Wi-Fi details and the token into the ESP32 program</strong> and upload it using the free Arduino IDE.</li>
+<li><strong>Plug the ESP32 into a charger</strong> near your router. Within a minute the report shows a green "Receiving heartbeats" message.</li>
+</ol>
+
+<p>The full step-by-step guide covers every screen, including Plesk, along with troubleshooting and answers to common questions. It's all on GitHub.</p>
+
+<p><a href="https://github.com/peterjmayhew/YouFibre_Monitor" style="display:inline-block;background:#1e8e3e;color:#fff;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:600;">Get the code and full guide on GitHub</a></p>
+
+<h2>Not just for YouFibre</h2>
+
+<p>I built it for my YouFibre connection, but nothing about it is tied to one provider. It works with any broadband: fibre, cable, 4G/5G home broadband or anything else. It's also free and open source under the MIT licence, so you're welcome to use it, change it and share it.</p>
+
+<h2>Privacy and updates</h2>
+
+<p>The monitor only talks to <strong>your own</strong> website. There's no third-party service, no tracking and no analytics. Your Wi-Fi password stays on the ESP32 and is never uploaded anywhere, including to GitHub. The WordPress plugin updates itself from GitHub with one click, so new features arrive easily.</p>
+
+<h2>Suggestions welcome</h2>
+
+<p>If you try it, I'd love to hear how you get on. If you have an idea for an improvement or run into a problem, please <a href="https://github.com/peterjmayhew/YouFibre_Monitor/issues/new">leave a suggestion on GitHub</a> or get in touch with me, Peter Mayhew, via <a href="https://github.com/peterjmayhew">my GitHub profile</a>.</p>
+
+<p><em>Happy (and hopefully uninterrupted) browsing!</em></p>

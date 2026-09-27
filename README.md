@@ -6,7 +6,7 @@ A small ESP32 board (about £5–£10) sits on your home Wi-Fi and tests your in
 
 It was built for YouFibre, but it works with **any** broadband provider.
 
-> **Author:** Peter Mayhew · **Suggestions and problems:** [open an issue](https://github.com/peterjmayhew/YouFibre_Monitor/issues/new) · **Licence:** MIT
+> 📝 **Read the story behind it:** [blog post](blog/) · **Author:** Peter Mayhew · **Suggestions and problems:** [open an issue](https://github.com/peterjmayhew/YouFibre_Monitor/issues/new) · **Licence:** MIT
 
 ---
 
@@ -433,6 +433,8 @@ ESP32/YouFibreMonitor/            Arduino sketch
     secrets.h                     your private settings (git-ignored, never committed)
 wordpress-plugin/netmon-heartbeat/
     netmon-heartbeat.php          the whole WordPress plugin (single file)
+blog/
+    blog-post.html                ready-to-paste WordPress blog post about the project
 CHANGELOG.md
 ```
 

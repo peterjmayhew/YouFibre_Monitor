@@ -431,7 +431,7 @@ ESP32/YouFibreMonitor/            Arduino sketch
     config.h                      general settings (committed)
     secrets.example.h             template for private settings (committed)
     secrets.h                     your private settings (git-ignored, never committed)
-WP Heatbeat Monitor/netmon-heartbeat/
+wordpress-plugin/netmon-heartbeat/
     netmon-heartbeat.php          the whole WordPress plugin (single file)
 CHANGELOG.md
 ```
@@ -450,11 +450,11 @@ CHANGELOG.md
 2. Add an entry to `CHANGELOG.md`.
 3. Build the zip. It must contain the folder `netmon-heartbeat/`:
    ```bash
-   cd "WP Heatbeat Monitor" && zip -r netmon-heartbeat.zip netmon-heartbeat
+   cd wordpress-plugin && zip -r netmon-heartbeat.zip netmon-heartbeat
    ```
 4. Commit, push, and create a GitHub release. **Tag it `vX.Y.Z` and attach `netmon-heartbeat.zip`.** The in-WordPress updater looks for exactly that file name.
    ```bash
-   gh release create vX.Y.Z "WP Heatbeat Monitor/netmon-heartbeat.zip" --title "vX.Y.Z" --notes "What changed..."
+   gh release create vX.Y.Z wordpress-plugin/netmon-heartbeat.zip --title "vX.Y.Z" --notes "What changed..."
    ```
 
 Sites running the plugin see the update within 12 hours, or straight away if someone clicks **Check for updates**.

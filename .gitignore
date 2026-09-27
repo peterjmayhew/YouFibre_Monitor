@@ -5,8 +5,8 @@ secrets.h
 *.zip
 
 # Old draft plugin kept locally for reference
-WP Heatbeat Monitor/heartbeat.php
-WP Heatbeat Monitor/hearbeat.php*
+wordpress-plugin/heartbeat.php
+wordpress-plugin/hearbeat.php*
 
 # Build output and local tooling
 build/

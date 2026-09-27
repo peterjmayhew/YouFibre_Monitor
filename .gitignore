@@ -14,3 +14,11 @@ build/
 desktop.ini
 Thumbs.db
 .DS_Store
+
+# Private notes and patterns (kept on this PC only)
+CLAUDE.local.md
+tools/private-patterns.txt
+
+# Test harness output
+tests/*.html
+tests/*.csv

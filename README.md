@@ -435,6 +435,11 @@ wordpress-plugin/netmon-heartbeat/
     netmon-heartbeat.php          the whole WordPress plugin (single file)
 blog/
     blog-post.html                ready-to-paste WordPress blog post about the project
+tests/harness.php                 plugin test suite - no WordPress needed:
+                                  php tests/harness.php wordpress-plugin/netmon-heartbeat/netmon-heartbeat.php
+tools/check-secrets.py            run before every push - makes sure no passwords/tokens are committed
+tools/serialwatch.py              read the ESP32's serial log (needs pyserial)
+CLAUDE.md                         maintainer handbook: design notes, build/release steps, backlog
 CHANGELOG.md
 ```
 

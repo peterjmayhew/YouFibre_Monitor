@@ -1,0 +1,16 @@
+# Private ESP32 settings (Wi-Fi password, WordPress token) - NEVER upload
+secrets.h
+
+# Packaged plugin - attached to GitHub Releases instead of committed
+*.zip
+
+# Old draft plugin kept locally for reference
+WP Heatbeat Monitor/heartbeat.php
+WP Heatbeat Monitor/hearbeat.php*
+
+# Build output and local tooling
+build/
+.claude/
+desktop.ini
+Thumbs.db
+.DS_Store
